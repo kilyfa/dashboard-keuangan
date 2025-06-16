@@ -322,8 +322,28 @@ if file:
 else:
     # ---------- Landing ----------
     st.title("AI Finance Studio")
-    st.info("Unggah file + isi saldo untuk mulai.")
     st.markdown(
-        "Bantu mengelola keuangan Anda dengan AI. "
-        "Analisis pengeluaran, forecast runway, dan saran investasi."
+        """
+        **AI Finance Studio** adalah dashboard interaktif berbasis _Streamlit_ yang membantu Anda:
+        1. **Mengimpor** data transaksi (_CSV/Excel_) dari aplikasi **MyMoney**.  
+        2. **Menganalisis** arus kas dengan grafik kategori, tren harian, dan deteksi pengeluaran “boncos”.  
+        3. **Mendapat insight AI** untuk ringkasan, tips budgeting, dan prediksi “saldo habis”.  
+        4. **Bertanya langsung** lewat _Chatbot_ tentang transaksi & strategi keuangan pribadi.  
+        5. **Melacak target tabungan** dengan progress bar, serta mengekspor laporan TXT.
+        ---
+        | Langkah | Deskripsi |
+        |---------|-----------|
+        | **1. Ekspor data** | Di MyMoney → *Export → CSV* (atau Excel). Pastikan kolom utama: `TIME`, `TYPE`, `AMOUNT`, `CATEGORY`, `ACCOUNT`. |
+        | **2. Unggah file** | Tekan **📂 Unggah CSV/Excel** di sidebar. |
+        | **3. Input saldo** | Isi **💵 Saldo Saat Ini** agar analisis runway akurat. |
+        | **4. Jelajahi tab** | `🏠 Dashboard • 💡 Insight • 🤝 Advisor • 💬 Chatbot • 📝 Report` |
+        ---
+        ### Format CSV
+        ```csv
+        TIME,TYPE,AMOUNT,CATEGORY,ACCOUNT
+        2025-06-01 08:00,(-) Expense,50000,Food,Cash
+        2025-06-02 09:30,(+) Income,12000000,Salary,Payroll
+        """
     )
+    st.info("Unggah file + isi saldo untuk mulai.")
+    st.markdown("""Program ini dibuat untuk keperluan pribadi, di mana digunakan untuk memantau dan terintegrasi oleh **AI** dari data `.csv` yang tercatat oleh aplikasi **MyMoney**.""")
