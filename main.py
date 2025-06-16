@@ -1,12 +1,3 @@
-# =============================================================
-# 💰  AI FINANCE STUDIO — DARK MODE · v4.4 (Runway Stats Explained)
-# =============================================================
-# • Dark theme permanen
-# • Prompt sidebar: input "Saldo Saat Ini" sebelum analisis
-# • Chatbot/advisor menerima cuplikan CSV (≤200 baris)
-# • Runway calculator menampilkan statistik regresi (burn-rate, R², dst.)
-# -------------------------------------------------------------
-
 import streamlit as st
 import pandas as pd
 import plotly.express as px
