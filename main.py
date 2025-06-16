@@ -117,19 +117,6 @@ def forecast_runway(df_daily: pd.DataFrame, balance: float):
 
 # ========= Sidebar ====================
 st.sidebar.header("📂 Data Keuangan")
-if st.sidebar.button("📥 Contoh CSV"):
-    sample = pd.DataFrame({
-        "TIME": ["2025-06-01 08:00"],
-        "TYPE": ["(-) Expense"],
-        "AMOUNT": [50000],
-        "CATEGORY": ["Food"],
-        "ACCOUNT": ["Cash"],
-    })
-    st.download_button("Download sample.csv",
-                       sample.to_csv(index=False),
-                       file_name="sample.csv",
-                       mime="text/csv")
-
 file = st.sidebar.file_uploader("Unggah CSV atau Excel", type=["csv", "xlsx"])
 current_balance_input = st.sidebar.number_input(
     "💵 Saldo Saat Ini (Rp)", min_value=0.0, step=100000.0, value=0.0,
