@@ -133,7 +133,7 @@ if file:
     # ---- Read & clean ----
     df = pd.read_excel(file) if file.name.endswith("xlsx") else pd.read_csv(file)
     df.columns = df.columns.str.strip()
-    df["TIME"] = pd.to_datetime(df["TIME"], errors="coerce")
+    df["TIME"] = pd.to_datetime(df["TIME"], format="%Y-%m-%d %H:%M:%S", errors="coerce")
     df.dropna(subset=["TIME"], inplace=True)
     df["DATE"] = df["TIME"].dt.date
     df["CATEGORY"] = df["CATEGORY"].str.title()
