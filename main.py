@@ -29,20 +29,9 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ========= OpenRouter setup ===========
-OPENROUTER_API_KEY = st.secrets.get("OPENROUTER_API_KEY", "")
-MODEL = "meta-llama/llama-3.3-70b-instruct:free"
-API_URL = "https://openrouter.ai/api/v1/chat/completions"
-HEADERS = {
-    "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-    "HTTP-Referer": "https://ai-finance-studio",
-    "X-Title": "Finance Studio",
-}
-SESSION = requests.Session()
-SESSION.mount(
-    "https://",
-    HTTPAdapter(max_retries=Retry(total=3, backoff_factor=2, status_forcelist=[502, 503, 504])),
-)
+# ========= Gemini API setup ===========
+GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", "")
+GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
 
 # ========= AI helpers =================
 @st.cache_data(ttl=60 * 60 * 6, show_spinner=False)
@@ -50,23 +39,23 @@ def ai_cached(msg: str) -> str:
     return ai_call(msg)
 
 def ai_call(msg: str, temperature: float = 0.7) -> str:
-    """Wrapper around OpenRouter chat completion."""
-    if not OPENROUTER_API_KEY:
-        return "⚠️ API-key belum disetel (Settings → Secrets)."
+    """Wrapper around Gemini chat completion."""
+    if not GEMINI_API_KEY:
+        return "⚠️ Gemini API-key belum disetel (Settings → Secrets)."
     payload = {
-        "model": MODEL,
-        "temperature": temperature,
-        "messages": [
-            {"role": "system", "content": MASTER_PROMPT},
-            {"role": "user", "content": msg},
-        ],
+        "contents": [
+            {"parts": [
+                {"text": MASTER_PROMPT + "\n" + msg}
+            ]}
+        ]
     }
     try:
-        r = SESSION.post(API_URL, headers=HEADERS, json=payload, timeout=120)
+        url = f"{GEMINI_API_URL}?key={GEMINI_API_KEY}"
+        r = requests.post(url, headers={"Content-Type": "application/json"}, json=payload, timeout=120)
         r.raise_for_status()
-        return r.json()["choices"][0]["message"]["content"].strip()
+        return r.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
     except Exception as e:
-        return f"⚠️ AI error: {e}"
+        return f"⚠️ Gemini error: {e}"
 
 # ========= Taxonomy ===================
 TAXONOMY = {
@@ -133,7 +122,7 @@ if file:
     # ---- Read & clean ----
     df = pd.read_excel(file) if file.name.endswith("xlsx") else pd.read_csv(file)
     df.columns = df.columns.str.strip()
-    df["TIME"] = pd.to_datetime(df["TIME"], errors="coerce")
+    df["TIME"] = pd.to_datetime(df["TIME"], format="%Y-%m-%d %H:%M:%S", errors="coerce")
     df.dropna(subset=["TIME"], inplace=True)
     df["DATE"] = df["TIME"].dt.date
     df["CATEGORY"] = df["CATEGORY"].str.title()
