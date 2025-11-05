@@ -274,9 +274,9 @@ if file:
 
             csv_preview = dff.head(200).to_json(orient="records", force_ascii=False)
             context = json.dumps({
-                "saldo": bal,
+                "saldo": float(bal),
                 "top_kategori": list(top3.keys()),
-                "target_tabungan": goal_amt,
+                "target_tabungan": float(goal_amt),
                 "preview_transaksi": csv_preview
             }, ensure_ascii=False)
 
